@@ -5,7 +5,7 @@ class Student:
     """The blueprint for creating students. Acts as a container for data (Name and Grades) and defines actions (Add grade and Get average grade) that can be performed on that data"""
     
     def __init__(self,name:str):
-        self._name = name
+        self._name:str
         self.name = name
         self._grades:list[Grade] = []
         
@@ -47,6 +47,8 @@ class Student:
 
 class Grade:
     """The blueprint for creating grades. Acts as a container for data (Score and Maximum Score) and define an action (Get percentage) that can be performed on that data"""
+    
+    __slots__ = ("_score","_max_score")
     
     def __init__(self,score:float,max_score:int):
         if score < 0:
