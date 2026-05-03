@@ -30,11 +30,15 @@ class Character:
 
     def attack_enemy(self, enemy: "Character"):
         """Attacks another character based on enemy's defense and own attack"""
-        enemy.take_damage(self._attack)
+        if self.health == 0:
+            raise ValueError("Cannot attack when health is zero.")
+        if enemy.health == 0:
+            raise ValueError("Cannot attack an enemy with zero health.")
+        enemy.take_damage(self.attack)
 
     def take_damage(self, damage: int):
         """Reduces health based on incoming damage and defense"""
-        if damage <= 0:
-            raise ValueError("Damage must be greater than zero.")
-        final_damage = max(0, damage - self._defense)
-        self._health -= final_damage
+        if damage < 0:
+            raise ValueError("Damage must be non-negative.")
+        final_damage = max(0, damage - self.defense)
+        self._health = max(0, self._health - final_damage)
