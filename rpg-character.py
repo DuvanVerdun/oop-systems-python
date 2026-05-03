@@ -28,16 +28,23 @@ class Character:
         """Returns the current defense of the character."""
         return self._defense
 
+    @property
+    def is_alive(self) -> bool:
+        """Returns True if the character is alive (health > 0), False if not"""
+        return self._health > 0
+
     def attack_enemy(self, enemy: "Character"):
-        """Attacks another character based on enemy's defense and own attack"""
-        if self.health == 0:
-            raise ValueError("Cannot attack when health is zero.")
-        if enemy.health == 0:
-            raise ValueError("Cannot attack an enemy with zero health.")
+        """Attacks another character by applying this character's attack"""
+        if not self.is_alive:
+            raise RuntimeError("Cannot attack when health is zero.")
+        if not enemy.is_alive:
+            raise RuntimeError("Cannot attack an enemy with zero health.")
         enemy.take_damage(self.attack)
 
     def take_damage(self, damage: int):
         """Reduces health based on incoming damage and defense"""
+        if not self.is_alive:
+            raise RuntimeError("Cannot take damage when health is zero.")
         if damage < 0:
             raise ValueError("Damage must be non-negative.")
         final_damage = max(0, damage - self.defense)
